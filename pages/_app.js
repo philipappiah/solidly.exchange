@@ -71,10 +71,7 @@ export default function MyApp({ Component, pageProps }) {
     }
   };
 
-  const [shutdownNoticeOpen, setShutdownNoticeOpen] = useState(true);
-  const closeShutdown = () => {
-    setShutdownNoticeOpen(false)
-  }
+ 
 
   return (
     <React.Fragment>
@@ -91,9 +88,7 @@ export default function MyApp({ Component, pageProps }) {
           </Layout>
         )}
         {!validateConfigured() && <Configure {...pageProps} />}
-        { shutdownNoticeOpen &&
-          <ShutdownNotice close={ closeShutdown } />
-        }
+       
       </ThemeProvider>
     </React.Fragment>
   );
