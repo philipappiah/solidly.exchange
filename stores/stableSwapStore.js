@@ -24,6 +24,7 @@ class Store {
       assets: [],
       govToken: null,
       veToken: null,
+     
       pairs: [],
       vestNFTs: [],
       rewards: {
@@ -791,15 +792,6 @@ class Store {
 
       let baseAssets = baseAssetsCall.data
 
-      const nativeFTM = {
-        address: CONTRACTS.FTM_ADDRESS,
-        decimals: CONTRACTS.FTM_DECIMALS,
-        logoURI: CONTRACTS.FTM_LOGO,
-        name: CONTRACTS.FTM_NAME,
-        symbol: CONTRACTS.FTM_SYMBOL
-      }
-
-      baseAssets.unshift(nativeFTM)
 
       let localBaseAssets = this.getLocalAssets()
 
@@ -807,7 +799,24 @@ class Store {
 
     } catch(ex) {
       console.log(ex)
-      return []
+
+      return [
+        {
+          address: '0x4cb6cEf87d8cADf966B455E8BD58ffF32aBA49D1',
+          decimals: 18,
+          logoURI: 'https://raw.githubusercontent.com/meterio/token-list/master/data/MTR/logo.png',
+          name: 'Meter Stable',
+          symbol: 'MTR'
+        },
+        {
+          address: '0x8A419EF4941355476CF04933E90BF3BBF2F73814',
+          name: 'Meter Governance',
+          symbol: 'MTRG',
+          decimals: 18,
+          logo: 'https://raw.githubusercontent.com/meterio/token-list/master/data/MTR/logo.png'
+        }
+
+      ]
     }
   }
 
@@ -823,24 +832,79 @@ class Store {
       return routeAssetsCall.data
     } catch(ex) {
       console.log(ex)
-      return []
+      return [
+        {
+          address: '0x4cb6cEf87d8cADf966B455E8BD58ffF32aBA49D1',
+          decimals: 18,
+          logoURI: 'https://raw.githubusercontent.com/meterio/token-list/master/data/MTR/logo.png',
+          name: 'Meter Stable',
+          symbol: 'MTR'
+        },
+        {
+          address: '0x8A419EF4941355476CF04933E90BF3BBF2F73814',
+          name: 'Meter Governance',
+          symbol: 'MTRG',
+          decimals: 18,
+          logo: 'https://raw.githubusercontent.com/meterio/token-list/master/data/MTR/logo.png'
+        }
+
+      ]
     }
   }
 
   _getPairs = async () => {
-    try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API}/api/v1/pairs`, {
-      	method: 'get',
-      	headers: {
-          'Authorization': `Basic ${process.env.NEXT_PUBLIC_API_TOKEN}`,
-        }
-      })
-      const pairsCall = await response.json()
-      return pairsCall.data
-    } catch(ex) {
-      console.log(ex)
-      return []
+
+
+    let allPairs = []
+
+    const tokenList = [
+      {
+        token0Address:'0x4cb6cEf87d8cADf966B455E8BD58ffF32aBA49D1',
+        token1Address:'0x8A419EF4941355476CF04933E90BF3BBF2F73814',
+        stable: false
+      },
+      {
+        token0Address:'0x4cb6cEf87d8cADf966B455E8BD58ffF32aBA49D1',
+        token1Address:'0x8A419EF4941355476CF04933E90BF3BBF2F73814',
+        stable: true
+      }
+    ]
+
+    for (let token of tokenList){
+      let pair = await this.getPair(token.token0Address,token.token1Address, token.stable)
+      allPairs.push(pair)
     }
+
+    
+
+     return allPairs;
+    
+
+    
+      // return [{
+      //   address: "0x4a5372a760F829f7520Bc1aAe35857bbEB1De217",
+      //   symbol: "VolatileV1 AMM - MTR/MTRG",
+      //   decimals: 18,
+      //   isStable:true,
+      //   token0:{
+      //     address: '0x4cb6cEf87d8cADf966B455E8BD58ffF32aBA49D1',
+      //     name: 'Meter Stable',
+      //     symbol: 'MTR',
+      //     decimals: 18,
+
+      //   },
+      //   token1:{
+      //     address: '0x8A419EF4941355476CF04933E90BF3BBF2F73814',
+      //     name: 'Meter Governance',
+      //     symbol: 'MTRG',
+      //     decimals: 18
+
+      //   }
+
+
+        
+      //   }]
+    
   }
 
   _getGovTokenBase = () => {
@@ -965,10 +1029,12 @@ class Store {
 
       const factoryContract = new web3.eth.Contract(CONTRACTS.FACTORY_ABI, CONTRACTS.FACTORY_ADDRESS)
       const gaugesContract = new web3.eth.Contract(CONTRACTS.VOTER_ABI, CONTRACTS.VOTER_ADDRESS)
-
+      
       const [ totalWeight ] = await Promise.all([
         gaugesContract.methods.totalWeight().call()
       ])
+     
+      
 
       const ps = await Promise.all(
         pairs.map(async (pair) => {
@@ -1349,6 +1415,7 @@ class Store {
 
       // CHECK ALLOWANCES AND SET TX DISPLAY
       if(token0.address !== 'FTM') {
+        console.log('token0 ', token0)
         allowance0 = await this._getDepositAllowance(web3, token0, account)
         if(BigNumber(allowance0).lt(amount0)) {
           this.emitter.emit(ACTIONS.TX_STATUS, {
@@ -1401,7 +1468,7 @@ class Store {
       // SUBMIT REQUIRED ALLOWANCE TRANSACTIONS
       if(BigNumber(allowance0).lt(amount0)) {
         const tokenContract = new web3.eth.Contract(CONTRACTS.ERC20_ABI, token0.address)
-
+        console.log(token0.address, CONTRACTS.ROUTER_ADDRESS, account)
         const tokenPromise = new Promise((resolve, reject) => {
           context._callContractWait(web3, tokenContract, 'approve', [CONTRACTS.ROUTER_ADDRESS, MAX_UINT256], account, gasPrice, null, null, allowance0TXID, (err) => {
             if (err) {
@@ -1419,6 +1486,7 @@ class Store {
 
       if(BigNumber(allowance1).lt(amount1)) {
         const tokenContract = new web3.eth.Contract(CONTRACTS.ERC20_ABI, token1.address)
+        
 
         const tokenPromise = new Promise((resolve, reject) => {
           context._callContractWait(web3, tokenContract, 'approve', [CONTRACTS.ROUTER_ADDRESS, MAX_UINT256], account, gasPrice, null, null, allowance1TXID, (err) => {
@@ -1694,7 +1762,7 @@ class Store {
 
       if(BigNumber(allowance1).lt(amount1)) {
         const tokenContract = new web3.eth.Contract(CONTRACTS.ERC20_ABI, token1.address)
-
+        console.log(token1.address,  CONTRACTS.ROUTER_ADDRESS, account)
         const tokenPromise = new Promise((resolve, reject) => {
           context._callContractWait(web3, tokenContract, 'approve', [CONTRACTS.ROUTER_ADDRESS, MAX_UINT256], account, gasPrice, null, null, allowance1TXID, (err) => {
             if (err) {
@@ -1794,6 +1862,7 @@ class Store {
   }
 
   getTXUUID = () => {
+    
     return uuidv4()
   }
 
@@ -2412,6 +2481,7 @@ class Store {
         console.warn('web3 not found')
         return null
       }
+      
 
       const { pair } = payload.content
 
@@ -2966,7 +3036,13 @@ class Store {
       for(let i = 0; i < bestAmountOut.routes.length; i++) {
         let amountIn = bestAmountOut.receiveAmounts[i]
         let amountOut = bestAmountOut.receiveAmounts[i+1]
-
+           
+     
+        if (BigNumber(amountIn).lte(BigNumber(0))) {
+          this.emitter.emit(ACTIONS.QUOTE_SWAP_RETURNED, null)
+          return;
+        }
+          
         const res = await libraryContract.methods.getTradeDiff(amountIn, bestAmountOut.routes[i].from, bestAmountOut.routes[i].to, bestAmountOut.routes[i].stable).call()
 
         const ratio = BigNumber(res.b).div(res.a)
@@ -4426,6 +4502,8 @@ class Store {
     }
   }
 
+
+  
   _callContractWait = (web3, contract, method, params, account, gasPrice, dispatchEvent, dispatchContent, uuid, callback, paddGasCost, sendValue = null) => {
     // console.log(method)
     // console.log(params)
@@ -4436,13 +4514,19 @@ class Store {
     //estimate gas
     this.emitter.emit(ACTIONS.TX_PENDING, { uuid })
 
+
+    
+    
     const gasCost = contract.methods[method](...params)
-      .estimateGas({ from: account.address, value: sendValue })
+      .estimateGas({ from: account.address})
       .then((gasAmount) => {
         const context = this
 
+        console.log(gasAmount)
+
         let sendGasAmount = BigNumber(gasAmount).times(1.5).toFixed(0)
-        let sendGasPrice = BigNumber(gasPrice).times(1.5).toFixed(0)
+        let sendGasPrice = BigNumber('140').times(1).toFixed(0)
+        //let sendGasPrice = BigNumber(gasPrice).times(1.5).toFixed(0)
         // if (paddGasCost) {
         //   sendGasAmount = BigNumber(sendGasAmount).times(1.15).toFixed(0)
         // }
@@ -4450,8 +4534,8 @@ class Store {
         // const sendGasAmount = '3000000'
         // const context = this
         //
-        contract.methods[method](...params)
-          .send({
+       
+        contract.methods[method](...params).send({
             from: account.address,
             gasPrice: web3.utils.toWei(sendGasPrice, 'gwei'),
             gas: sendGasAmount,
@@ -4489,15 +4573,6 @@ class Store {
               callback(error)
             }
           })
-      })
-      .catch((ex) => {
-        console.log(ex)
-        if (ex.message) {
-          this.emitter.emit(ACTIONS.TX_REJECTED, { uuid, error: ex.message })
-          return callback(ex.message)
-        }
-        this.emitter.emit(ACTIONS.TX_REJECTED, { uuid, error: 'Error estimating gas' })
-        callback(ex)
       })
   }
 

@@ -69,7 +69,7 @@ export default function ssLiquidityManage() {
   const [ slippageError, setSlippageError ] = useState(false)
 
   const ssUpdated = async () => {
-    console.log(router.query.address)
+    
 
     const storeAssetOptions = stores.stableSwapStore.getStore('baseAssets')
     const nfts = stores.stableSwapStore.getStore('vestNFTs')
@@ -705,9 +705,12 @@ export default function ssLiquidityManage() {
   const onAssetSelect = async (type, value) => {
     if(type === 'amount0') {
       setAsset0(value)
+      if(value && asset1 && asset1.address && value.address){
       const p = await stores.stableSwapStore.getPair(value.address, asset1.address, stable)
       setPair(p)
+      
       callQuoteAddLiquidity(amount0, amount1, priorityAsset, stable, p, value, asset1)
+      }
     } else if (type === 'amount1') {
       setAsset1(value)
       const p = await stores.stableSwapStore.getPair(asset0.address, value.address, stable)

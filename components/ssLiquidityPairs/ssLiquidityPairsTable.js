@@ -653,6 +653,7 @@ const EnhancedTableToolbar = (props) => {
 };
 
 export default function EnhancedTable({ pairs }) {
+ 
   const classes = useStyles();
   const router = useRouter();
 

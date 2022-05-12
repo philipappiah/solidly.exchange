@@ -137,7 +137,9 @@ function Setup() {
   const onAssetSelect = (type, value) => {
     if(type === 'From') {
 
-      if(value.address === toAssetValue.address) {
+      
+
+      if(toAssetValue && value.address === toAssetValue.address) {
         setToAssetValue(fromAssetValue)
         setFromAssetValue(toAssetValue)
         calculateReceiveAmount(fromAmountValue, toAssetValue, fromAssetValue)
@@ -148,7 +150,7 @@ function Setup() {
 
 
     } else {
-      if(value.address === fromAssetValue.address) {
+      if(fromAssetValue && value.address === fromAssetValue.address) {
         setFromAssetError(toAssetValue)
         setToAssetValue(fromAssetValue)
         calculateReceiveAmount(fromAmountValue, toAssetValue, fromAssetValue)

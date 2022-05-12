@@ -37,7 +37,7 @@ class Store {
         instant: 130,
       },
       gasSpeed: 'fast',
-      currentBlock: 12906197,
+      currentBlock: 14788597,
     };
 
     dispatcher.register(
@@ -59,7 +59,6 @@ class Store {
 
   setStore(obj) {
     this.store = { ...this.store, ...obj };
-    console.log(this.store);
     return this.emitter.emit(ACTIONS.STORE_UPDATED);
   }
 
@@ -207,6 +206,8 @@ class Store {
     if (!provider) {
       return null;
     }
+    
+    
     return new Web3(provider);
   };
 
