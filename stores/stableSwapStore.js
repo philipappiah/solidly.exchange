@@ -1,11 +1,19 @@
-import async from "promise-async"
+
 import {
   MAX_UINT256,
   ZERO_ADDRESS,
   ACTIONS,
-  CONTRACTS
+  CONTRACTS,
 } from "./constants"
+
+import stableSwapAssets from './configurations/stableSwapAssets'
+import stableSwapRouteAssets from './configurations/stableSwapRouteAssets'
 import { v4 as uuidv4 } from 'uuid'
+
+
+import { GET_PAIRS } from './queries';
+import { request } from 'graphql-request'
+
 
 import * as moment from "moment"
 import { formatCurrency } from '../utils'
@@ -13,11 +21,14 @@ import stores from "./"
 
 import BigNumber from "bignumber.js"
 const fetch = require("node-fetch")
+const SOLIDLY_GRAPH_URI = 'http://18.138.233.236:8000/subgraphs/name/meterio/solidly-subgraph';
+
 
 class Store {
   constructor(dispatcher, emitter) {
     this.dispatcher = dispatcher
     this.emitter = emitter
+   
 
     this.store = {
       baseAssets: [],
@@ -764,8 +775,8 @@ class Store {
     try {
       this.setStore({ govToken: this._getGovTokenBase() })
       this.setStore({ veToken: this._getVeTokenBase() })
-      this.setStore({ baseAssets: await this._getBaseAssets() })
-      this.setStore({ routeAssets: await this._getRouteAssets() })
+      this.setStore({ baseAssets: stableSwapAssets })
+      this.setStore({ routeAssets: stableSwapRouteAssets })
       this.setStore({ pairs: await this._getPairs() })
 
       this.emitter.emit(ACTIONS.UPDATED)
@@ -780,131 +791,38 @@ class Store {
     }
   }
 
-  _getBaseAssets = async () => {
-    try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API}/api/v1/baseAssets`, {
-      	method: 'get',
-      	headers: {
-          'Authorization': `Basic ${process.env.NEXT_PUBLIC_API_TOKEN}`,
-        }
-      })
-      const baseAssetsCall = await response.json()
 
-      let baseAssets = baseAssetsCall.data
+  
 
-
-      let localBaseAssets = this.getLocalAssets()
-
-      return [...baseAssets, ...localBaseAssets]
-
-    } catch(ex) {
-      console.log(ex)
-
-      return [
-        {
-          address: '0x4cb6cEf87d8cADf966B455E8BD58ffF32aBA49D1',
-          decimals: 18,
-          logoURI: 'https://raw.githubusercontent.com/meterio/token-list/master/data/MTR/logo.png',
-          name: 'Meter Stable',
-          symbol: 'MTR'
-        },
-        {
-          address: '0x8A419EF4941355476CF04933E90BF3BBF2F73814',
-          name: 'Meter Governance',
-          symbol: 'MTRG',
-          decimals: 18,
-          logo: 'https://raw.githubusercontent.com/meterio/token-list/master/data/MTR/logo.png'
-        }
-
-      ]
-    }
-  }
-
-  _getRouteAssets = async () => {
-    try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API}/api/v1/routeAssets`, {
-      	method: 'get',
-      	headers: {
-          'Authorization': `Basic ${process.env.NEXT_PUBLIC_API_TOKEN}`,
-        }
-      })
-      const routeAssetsCall = await response.json()
-      return routeAssetsCall.data
-    } catch(ex) {
-      console.log(ex)
-      return [
-        {
-          address: '0x4cb6cEf87d8cADf966B455E8BD58ffF32aBA49D1',
-          decimals: 18,
-          logoURI: 'https://raw.githubusercontent.com/meterio/token-list/master/data/MTR/logo.png',
-          name: 'Meter Stable',
-          symbol: 'MTR'
-        },
-        {
-          address: '0x8A419EF4941355476CF04933E90BF3BBF2F73814',
-          name: 'Meter Governance',
-          symbol: 'MTRG',
-          decimals: 18,
-          logo: 'https://raw.githubusercontent.com/meterio/token-list/master/data/MTR/logo.png'
-        }
-
-      ]
-    }
-  }
-
+ 
   _getPairs = async () => {
 
-
+    const data = await request(SOLIDLY_GRAPH_URI, GET_PAIRS)
+  
     let allPairs = []
+    let tokenList = []
 
-    const tokenList = [
-      {
-        token0Address:'0x4cb6cEf87d8cADf966B455E8BD58ffF32aBA49D1',
-        token1Address:'0x8A419EF4941355476CF04933E90BF3BBF2F73814',
-        stable: false
-      },
-      {
-        token0Address:'0x4cb6cEf87d8cADf966B455E8BD58ffF32aBA49D1',
-        token1Address:'0x8A419EF4941355476CF04933E90BF3BBF2F73814',
-        stable: true
-      }
-    ]
+    if (data){
+      data.pairs.forEach(p => {
+
+        tokenList.push({
+          token0Address: p.token0.id,
+          token1Address: p.token1.id,
+          stable: p.stable
+        })
+      })
+      
+    }
 
     for (let token of tokenList){
       let pair = await this.getPair(token.token0Address,token.token1Address, token.stable)
       allPairs.push(pair)
     }
 
-    
 
      return allPairs;
     
 
-    
-      // return [{
-      //   address: "0x4a5372a760F829f7520Bc1aAe35857bbEB1De217",
-      //   symbol: "VolatileV1 AMM - MTR/MTRG",
-      //   decimals: 18,
-      //   isStable:true,
-      //   token0:{
-      //     address: '0x4cb6cEf87d8cADf966B455E8BD58ffF32aBA49D1',
-      //     name: 'Meter Stable',
-      //     symbol: 'MTR',
-      //     decimals: 18,
-
-      //   },
-      //   token1:{
-      //     address: '0x8A419EF4941355476CF04933E90BF3BBF2F73814',
-      //     name: 'Meter Governance',
-      //     symbol: 'MTRG',
-      //     decimals: 18
-
-      //   }
-
-
-        
-      //   }]
-    
   }
 
   _getGovTokenBase = () => {
