@@ -21,7 +21,7 @@ import stores from "./"
 
 import BigNumber from "bignumber.js"
 const fetch = require("node-fetch")
-const SOLIDLY_GRAPH_URI = 'http://18.138.233.236:8000/subgraphs/name/meterio/solidly-subgraph';
+const SOLIDLY_GRAPH_URI = 'https://graph-on-testnet.meter.io/subgraphs/name/meterio/solidly-subgraph';
 
 
 class Store {
@@ -2826,6 +2826,7 @@ class Store {
 
       // some path logic. Have a base asset (FTM) swap from start asset to FTM, swap from FTM back to out asset. Don't know.
       const routeAssets = this.getStore('routeAssets')
+      
       const { fromAsset, toAsset, fromAmount } = payload.content
 
       const routerContract = new web3.eth.Contract(CONTRACTS.ROUTER_ABI, CONTRACTS.ROUTER_ADDRESS)
@@ -2929,6 +2930,8 @@ class Store {
         return routerContract.methods.getAmountsOut(sendFromAmount, route.routes)
       }))
 
+      
+
       for(let i = 0; i < receiveAmounts.length; i++) {
         amountOuts[i].receiveAmounts = receiveAmounts[i]
         amountOuts[i].finalValue = BigNumber(receiveAmounts[i][receiveAmounts[i].length-1]).div(10**toAsset.decimals).toFixed(toAsset.decimals)
@@ -2962,7 +2965,7 @@ class Store {
         }
           
         const res = await libraryContract.methods.getTradeDiff(amountIn, bestAmountOut.routes[i].from, bestAmountOut.routes[i].to, bestAmountOut.routes[i].stable).call()
-
+        
         const ratio = BigNumber(res.b).div(res.a)
         totalRatio = BigNumber(totalRatio).times(ratio).toFixed(18)
       }
