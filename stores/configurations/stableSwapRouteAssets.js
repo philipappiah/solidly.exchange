@@ -4,21 +4,21 @@ export default [{
   name: 'Meter Stable',
   symbol: 'MTR',
   decimals: 18,
-  logo: 'https://raw.githubusercontent.com/meterio/token-list/master/data/MTR/logo.png'
+  logoURI: 'https://raw.githubusercontent.com/meterio/token-list/master/data/MTR/logo.png'
 },
 {
   address: '0x8A419EF4941355476CF04933E90BF3BBF2F73814',
   name: 'Meter Governance',
   symbol: 'MTRG',
   decimals: 18,
-  logo: 'https://raw.githubusercontent.com/meterio/token-list/master/data/MTR/logo.png'
+  logoURI: 'https://raw.githubusercontent.com/meterio/token-list/master/data/MTRG/logo.png'
 },
 {
   address: '0x3e5a2a4812d319ded22479a88ed708c6b55ca0b1',
   name: 'Meter USDT',
   symbol: 'mUSDT',
   decimals: 6,
-  logo: 'https://raw.githubusercontent.com/meterio/token-list/master/data/USDT/logo.png'
+  logoURI: 'https://raw.githubusercontent.com/meterio/token-list/master/data/USDT/logo.png'
 }
 
 ]
