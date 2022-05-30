@@ -19,6 +19,27 @@ export default [{
   symbol: 'mUSDT',
   decimals: 6,
   logoURI: 'https://raw.githubusercontent.com/meterio/token-list/master/data/USDT/logo.png'
+},
+{
+  address: '0x1B80E7dA342981314f4032434fE0def21B90Ec20',
+  name: 'DAI',
+  symbol: 'DAI',
+  decimals: 18,
+  logoURI: 'https://raw.githubusercontent.com/meterio/token-list/master/data/DAI/logo.png'
+},
+{
+  address: '0xb0D0410D3D158a9b38c36e5aAB80264BC5272a20',
+  name: 'BUSD',
+  symbol: 'BUSD',
+  decimals: 6,
+  logoURI: 'https://raw.githubusercontent.com/meterio/token-list/master/data/BUSD/logo.png'
+},
+{
+  address: '0x4e5c590D2fa8Aa3bC85342690eCfc33cF1c27eBB',
+  name: 'USDC',
+  symbol: 'USDC',
+  decimals: 6,
+  logoURI: 'https://raw.githubusercontent.com/meterio/token-list/master/data/USDC/logo.png'
 }
 
 ]
