@@ -34,7 +34,7 @@ export default [
     address: '0xb0D0410D3D158a9b38c36e5aAB80264BC5272a20',
     name: 'BUSD',
     symbol: 'BUSD',
-    decimals: 6,
+    decimals: 18,
     logoURI: 'https://raw.githubusercontent.com/meterio/token-list/master/data/BUSD/logo.png'
   },
   {
