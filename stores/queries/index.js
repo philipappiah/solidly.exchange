@@ -2,7 +2,7 @@ import { gql } from 'graphql-request'
 
 export const GET_PAIRS = gql`
   query getPairs {
-    pairs(first: 1000) {
+    pairs {
       id
  
       stable
