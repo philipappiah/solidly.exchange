@@ -3,6 +3,7 @@ import { Grid, Typography, Button, TextField, CircularProgress, RadioGroup, Radi
 import { useRouter } from 'next/router';
 import moment from 'moment';
 import BigNumber from 'bignumber.js';
+
 import classes from "./ssVest.module.css";
 import stores from '../../stores'
 import {
@@ -19,6 +20,7 @@ export default function ffLockDuration({ nft, updateLockDuration }) {
   const [selectedValue, setSelectedValue] = useState(null);
 
   const router = useRouter();
+
 
   useEffect(() => {
     const lockReturned = () => {
@@ -39,6 +41,7 @@ export default function ffLockDuration({ nft, updateLockDuration }) {
 
   useEffect(() => {
     if(nft && nft.lockEnds) {
+      
       setSelectedDate(moment.unix(nft.lockEnds).format('YYYY-MM-DD'))
       setSelectedValue(null)
     }
@@ -53,6 +56,7 @@ export default function ffLockDuration({ nft, updateLockDuration }) {
 
   const handleChange = (event) => {
     setSelectedValue(event.target.value);
+    setSelectedDateError(false)
 
     let days = 0;
     switch (event.target.value) {
@@ -70,6 +74,7 @@ export default function ffLockDuration({ nft, updateLockDuration }) {
         break;
       default:
     }
+
     const newDate = moment().add(days, 'days').format('YYYY-MM-DD');
 
     setSelectedDate(newDate);
@@ -77,13 +82,22 @@ export default function ffLockDuration({ nft, updateLockDuration }) {
   }
 
   const onLock = () => {
-    setLockLoading(true)
-
+    const week = 86400  * 7
     const now = moment()
     const expiry = moment(selectedDate).add(1, 'days')
     const secondsToExpire = expiry.diff(now, 'seconds')
+  
+    const new_lock_time = Math.floor(moment(selectedDate).unix() / week) * week 
+    const last_lock_time =  Math.floor(moment.unix(nft?.lockEnds).unix() / week) * week 
 
-    stores.dispatcher.dispatch({ type: ACTIONS.INCREASE_VEST_DURATION, content: { unlockTime: secondsToExpire, tokenID: nft.id } })
+    if (new_lock_time > last_lock_time){
+      setLockLoading(true)
+      stores.dispatcher.dispatch({ type: ACTIONS.INCREASE_VEST_DURATION, content: { unlockTime: secondsToExpire, tokenID: nft.id } })
+    }else{
+      setSelectedDateError(true)
+      stores.emitter.emit(ACTIONS.ERROR, "Can only increase lock duration")
+      
+    }
   }
 
   const focus = () => {

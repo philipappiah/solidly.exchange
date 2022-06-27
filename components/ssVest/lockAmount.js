@@ -46,6 +46,9 @@ export default function ffLockAmount({ nft, govToken, updateLockAmount }) {
   }
 
   const onLock = () => {
+    if(!amount) return
+    if(Number(amount) <= 0) return
+    
     setLockLoading(true)
     stores.dispatcher.dispatch({ type: ACTIONS.INCREASE_VEST_AMOUNT, content: { amount, tokenID: nft.id } })
   }

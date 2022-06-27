@@ -5,6 +5,8 @@ import { formatCurrency } from '../../utils';
 import BigNumber from "bignumber.js";
 
 export default function VestingInfo({ currentNFT, futureNFT, veToken, govToken, showVestingStructure }) {
+
+
   return (
     <div className={ classes.vestInfoContainer }>
       { currentNFT &&
