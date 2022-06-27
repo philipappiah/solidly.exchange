@@ -1,7 +1,7 @@
 import { SvgIcon } from "@material-ui/core";
 import { withTheme } from "@material-ui/core/styles";
 import classes from "./configure.module.css";
-import SVGComponent from "../../components/SVGComponent";
+import SVGComponent from "./SVGComponent";
 
 function ProjectIcon(props) {
   const { color, className, width, height } = props;
