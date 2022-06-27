@@ -12,6 +12,7 @@ function ProjectIcon(props) {
   );
 }
 
+
 function Configure({ theme }) {
   return (
     <div className={classes.configureContainer}>
