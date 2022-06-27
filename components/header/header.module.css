@@ -38,6 +38,7 @@
 }
 
 .appLogo {
+  margin: 20px;
   transform: scale(6);
   position: fixed;
   left: 100px;
