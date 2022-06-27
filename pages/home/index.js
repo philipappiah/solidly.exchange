@@ -2,7 +2,6 @@ import { Typography, Button, Paper, SvgIcon, Grid, Avatar } from "@material-ui/c
 
 import { useScrollTo } from 'react-use-window-scroll';
 
-import SVGComponent from '../SVGComponent';
 
 import classes from './home.module.css';
 
