@@ -7,7 +7,8 @@ import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import VestingInfo from './vestingInfo'
 import stores from '../../stores'
 import {
-  ACTIONS
+  ACTIONS,
+  CONTRACTS
 } from '../../stores/constants';
 
 export default function Unlock({ nft, govToken, veToken }) {
@@ -33,9 +34,23 @@ export default function Unlock({ nft, govToken, veToken }) {
     };
   }, []);
 
-  const onWithdraw = () => {
-    setLockLoading(true)
-    stores.dispatcher.dispatch({ type: ACTIONS.WITHDRAW_VEST, content: { tokenID: nft.id } })
+  const onWithdraw = async () => {
+    const web3 = await stores.accountStore.getWeb3Provider()
+    const vestingContract = new web3.eth.Contract(CONTRACTS.VE_TOKEN_ABI, CONTRACTS.VE_TOKEN_ADDRESS)
+
+    const [attachments, voted] = await Promise.all([
+      vestingContract.methods.attachments(nft.id ).call(),
+      vestingContract.methods.voted(nft.id ).call()
+    ]
+    )
+
+    if (Number(attachments) === 0 && Number(voted) === 0 ){
+      setLockLoading(true)
+      stores.dispatcher.dispatch({ type: ACTIONS.WITHDRAW_VEST, content: { tokenID: nft.id } })
+    }else{
+      stores.emitter.emit(ACTIONS.ERROR, "Cannot withdraw an attached token")
+    }
+
   }
 
   const onBack = () => {
