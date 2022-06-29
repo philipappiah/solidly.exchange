@@ -576,7 +576,7 @@ function AssetSelect({ type, value, assetOptions, onSelect }) {
             <img
               className={ classes.displayAssetIconSmall }
               alt=""
-              src={ asset ? `${asset.logoURI}` : '' }
+              src={ asset ? `${asset.logoURI}` : asset && value.symbol.toUpperCase() === 'VOLT' ? MTRG_LOGO : '' }
               height='60px'
               onError={(e)=>{e.target.onerror = null; e.target.src="/tokens/unknown-logo.png"}}
             />
@@ -606,7 +606,7 @@ function AssetSelect({ type, value, assetOptions, onSelect }) {
             <img
               className={ classes.displayAssetIconSmall }
               alt=""
-              src={ asset ? `${asset.logoURI}` : '' }
+              src={ asset ? `${asset.logoURI}` : asset && value.symbol.toUpperCase() === 'VOLT' ? MTRG_LOGO : '' }
               height='60px'
               onError={(e)=>{e.target.onerror = null; e.target.src="/tokens/unknown-logo.png"}}
             />
@@ -710,7 +710,7 @@ function AssetSelect({ type, value, assetOptions, onSelect }) {
             <img
               className={ classes.displayAssetIcon }
               alt=""
-              src={ value ? `${value.logoURI}` : '' }
+              src={ value ? `${value.logoURI}` : value && value.symbol.toUpperCase() === 'VOLT' ? MTRG_LOGO : '' }
               height='100px'
               onError={(e)=>{e.target.onerror = null; e.target.src="/tokens/unknown-logo.png"}}
             />

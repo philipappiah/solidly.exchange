@@ -21,7 +21,7 @@ import stores from "./"
 
 import BigNumber from "bignumber.js"
 const fetch = require("node-fetch")
-const SOLIDLY_GRAPH_URI = 'https://graph-on-testnet.meter.io/subgraphs/name/meterio/solidly-subgraph';
+// const SOLIDLY_GRAPH_URI = 'https://graph-on-testnet.meter.io/subgraphs/name/meterio/solidly-subgraph';
 
 
 class Store {

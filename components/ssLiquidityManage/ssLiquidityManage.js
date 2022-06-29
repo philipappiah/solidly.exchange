@@ -14,7 +14,8 @@ import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline'
 import stores from '../../stores'
 import {
   ACTIONS,
-  CONTRACTS
+  CONTRACTS,
+  MTRG_LOGO
 } from '../../stores/constants';
 
 export default function ssLiquidityManage() {
@@ -1378,7 +1379,7 @@ function AssetSelect({ type, value, assetOptions, onSelect, disabled }) {
             <img
               className={ classes.displayAssetIconSmall }
               alt=""
-              src={ asset ? `${asset.logoURI}` : '' }
+              src={ asset ? `${asset.logoURI}` : asset && asset && value.symbol.toUpperCase() === 'VOLT' ? MTRG_LOGO : '' }
               height='60px'
               onError={(e)=>{e.target.onerror = null; e.target.src="/tokens/unknown-logo.png"}}
             />
@@ -1408,7 +1409,7 @@ function AssetSelect({ type, value, assetOptions, onSelect, disabled }) {
             <img
               className={ classes.displayAssetIconSmall }
               alt=""
-              src={ asset ? `${asset.logoURI}` : '' }
+              src={ asset ? `${asset.logoURI}` : asset && asset && value.symbol.toUpperCase() === 'VOLT' ? MTRG_LOGO : '' }
               height='60px'
               onError={(e)=>{e.target.onerror = null; e.target.src="/tokens/unknown-logo.png"}}
             />
@@ -1518,7 +1519,7 @@ function AssetSelect({ type, value, assetOptions, onSelect, disabled }) {
             <img
               className={ classes.displayAssetIcon }
               alt=""
-              src={ value ? `${value.logoURI}` : '' }
+              src={ value ? `${value.logoURI}` : value && value.symbol.toUpperCase() === 'VOLT' ? MTRG_LOGO : '' }
               height='100px'
               onError={(e)=>{e.target.onerror = null; e.target.src="/tokens/unknown-logo.png"}}
             />

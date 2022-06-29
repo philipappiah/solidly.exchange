@@ -13,7 +13,8 @@ import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
 import stores from '../../stores'
 import {
   ACTIONS,
-  ETHERSCAN_URL
+  ETHERSCAN_URL,
+  MTRG_LOGO
 } from '../../stores/constants';
 
 export default function ssBribeCreate() {
@@ -344,7 +345,7 @@ function AssetSelect({ type, value, assetOptions, onSelect }) {
             <img
               className={ classes.displayAssetIconSmall }
               alt=""
-              src={ asset ? `${asset.logoURI}` : '' }
+              src={ asset ? `${asset.logoURI}` : asset && value.symbol.toUpperCase() === 'VOLT' ? MTRG_LOGO : '' }
               height='60px'
               onError={(e)=>{e.target.onerror = null; e.target.src="/tokens/unknown-logo.png"}}
             />
@@ -374,7 +375,7 @@ function AssetSelect({ type, value, assetOptions, onSelect }) {
             <img
               className={ classes.displayAssetIconSmall }
               alt=""
-              src={ asset ? `${asset.logoURI}` : '' }
+              src={ asset ? `${asset.logoURI}` : asset && value.symbol.toUpperCase() === 'VOLT' ? MTRG_LOGO : '' }
               height='60px'
               onError={(e)=>{e.target.onerror = null; e.target.src="/tokens/unknown-logo.png"}}
             />
@@ -484,7 +485,7 @@ function AssetSelect({ type, value, assetOptions, onSelect }) {
             <img
               className={ classes.displayAssetIcon }
               alt=""
-              src={ value ? `${value.logoURI}` : '' }
+              src={ value ? `${value.logoURI}` : value && value.symbol.toUpperCase() === 'VOLT' ? MTRG_LOGO : '' }
               height='100px'
               onError={(e)=>{e.target.onerror = null; e.target.src="/tokens/unknown-logo.png"}}
             />
