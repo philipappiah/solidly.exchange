@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 
-import { Typography, Paper, Switch, Button, Tooltip, Grid, SvgIcon } from '@material-ui/core';
+import { Typography, Paper, Switch, Button, Tooltip, Grid, SvgIcon, Link} from '@material-ui/core';
 import { ToggleButton, ToggleButtonGroup } from '@material-ui/lab';
 import { withTheme, withStyles } from '@material-ui/core/styles';
-
+import { INFO_URL } from '../../stores/constants/constants';
 import SSWarning  from '../ssWarning';
 
 import stores from '../../stores';
@@ -132,6 +132,9 @@ function Navigation(props) {
     if(activePath.includes('whitelist')) {
       setActive('whitelist')
     }
+    if(activePath.includes('info')) {
+      setActive('info')
+    }
   }, [])
 
   const renderNavs = () => {
@@ -166,6 +169,7 @@ function Navigation(props) {
           'Whitelist',
           'whitelist',
         )}
+         {renderExternalLink('Info', 'info')}
       </ToggleButtonGroup>
     );
   };
@@ -180,6 +184,17 @@ function Navigation(props) {
       </div>
     );
   };
+
+  const renderExternalLink = (title, link) => {
+    return (
+      <ToggleButton  className={ classes.navButton } classes={{ selected: classes.testChange }}>
+        <Link href={INFO_URL} style={{color:"#7E99B0", textDecoration:"none"}} target="_blank"  > <Typography variant="h2" className={ classes.subtitleText}>{title}</Typography></Link>
+       
+      </ToggleButton>
+    );
+  };
+
+
 
   const renderSubNav = (title, link) => {
     return (

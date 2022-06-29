@@ -16,6 +16,8 @@ if(isTestnet) {
 
 export const MTRG_LOGO = 'https://raw.githubusercontent.com/meterio/token-list/master/data/MTRG/logo.png'
 
+export const INFO_URL = 'http://metersolidlyinfo.surge.sh'
+
 export const ETHERSCAN_URL = scan
 
 export const CONTRACTS = cont
