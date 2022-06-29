@@ -188,7 +188,7 @@ function Navigation(props) {
   const renderExternalLink = (title, link) => {
     return (
       <ToggleButton  className={ classes.navButton } classes={{ selected: classes.testChange }}>
-        <Link href={INFO_URL} style={{color:"#7E99B0", textDecoration:"none"}} target="_blank"  > <Typography variant="h2" className={ classes.subtitleText}>{title}</Typography></Link>
+        <Link href={INFO_URL} style={{color:"#7E99B0", textDecoration:"none"}} rel="noopener noreferrer" target="_blank"  > <Typography variant="h2" className={ classes.subtitleText}>{title}</Typography></Link>
        
       </ToggleButton>
     );
