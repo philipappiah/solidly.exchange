@@ -801,13 +801,14 @@ class Store {
     const factoryContract = new web3.eth.Contract(CONTRACTS.FACTORY_ABI, CONTRACTS.FACTORY_ADDRESS)
     const pairsLen = await factoryContract.methods.allPairsLength().call()
 
-     
+    
     let pairs = []
     const account = stores.accountStore.getStore("account")
 
     for (let i = 0; i < pairsLen; i++){
         const pairAddress =  await factoryContract.methods.allPairs(i).call()
-     
+       
+         
         const pairContract = new web3.eth.Contract(CONTRACTS.PAIR_ABI, pairAddress)
         const gaugesContract = new web3.eth.Contract(CONTRACTS.VOTER_ABI, CONTRACTS.VOTER_ADDRESS)
 
@@ -830,6 +831,9 @@ class Store {
           pairContract.methods.claimable0(account.address).call(),
           pairContract.methods.claimable1(account.address).call()
         ])
+
+
+        
 
         const token0Contract = new web3.eth.Contract(CONTRACTS.ERC20_ABI, token0)
         const token1Contract = new web3.eth.Contract(CONTRACTS.ERC20_ABI, token1)
@@ -867,6 +871,8 @@ class Store {
           claimable0: BigNumber(claimable0).div(10**token0Decimals).toFixed(parseInt(token0Decimals)),
           claimable1: BigNumber(claimable1).div(10**token1Decimals).toFixed(parseInt(token1Decimals))
         }
+
+        
 
         if(gaugeAddress !== ZERO_ADDRESS) {
           const gaugeContract = new web3.eth.Contract(CONTRACTS.GAUGE_ABI, gaugeAddress)

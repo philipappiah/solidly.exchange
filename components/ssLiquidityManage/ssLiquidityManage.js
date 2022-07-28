@@ -751,6 +751,7 @@ export default function ssLiquidityManage() {
     callQuoteRemoveLiquidity(pear, amount)
   }
 
+
   const renderMediumInput = (type, value, logo, symbol) => {
     return (
       <div className={ classes.textField}>
@@ -994,6 +995,7 @@ export default function ssLiquidityManage() {
     if(vestNFTs.length === 0) {
       return null
     }
+
     
     return (
       <div className={ classes.textField}>

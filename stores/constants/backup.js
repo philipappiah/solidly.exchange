@@ -1,13 +1,13 @@
 import abis from "../abis";
 
-export const GOV_TOKEN_ADDRESS = '0xD717185DE4A9ACA8AeffAC5Ed21cDc8532031f3c'
+export const GOV_TOKEN_ADDRESS = '0xEb474B453d21E32Ad8914826962067B057299e1A'
 export const GOV_TOKEN_NAME = 'Solid'
 export const GOV_TOKEN_SYMBOL = 'SOLID'
 export const GOV_TOKEN_DECIMALS = 18
 export const GOV_TOKEN_LOGO = 'https://prod.solidly.exchange/Solidly-O.svg'
 export const GOV_TOKEN_ABI = abis.tokenABI
 
-export const VE_TOKEN_ADDRESS = '0xA2eD45fce786Aa4b187370df8681bBDD637c73e4'
+export const VE_TOKEN_ADDRESS = '0x19761C8725Bf4CC3Dcee58e51A7Eb12dD4d895c6'
 export const VE_TOKEN_NAME = 'veNFT'
 export const VE_TOKEN_SYMBOL = 'veNFT'
 export const VE_TOKEN_DECIMALS = 18
@@ -26,19 +26,19 @@ export const FTM_SYMBOL = 'MTR'
 export const FTM_DECIMALS = 18
 export const FTM_LOGO = 'https://assets.coingecko.com/coins/images/4001/large/Fantom.png'
 
-export const FACTORY_ADDRESS = '0xF1E58B1f3974C9020f2706b56dD012675d948DC5'
+export const FACTORY_ADDRESS = '0xa36f84b86cEF6E3315EFee41ca14e33E7C7C31D2'
 export const FACTORY_ABI = abis.factoryABI
 
-export const ROUTER_ADDRESS = '0x70007e39d16315adF6c84992B86Dec5CA38997F2'
+export const ROUTER_ADDRESS = '0x3a0a7BF6B1c99731f3BA229A3282388c4632919d'
 export const ROUTER_ABI = abis.routerABI
 
-export const VE_DIST_ADDRESS = '0x8B6ECFa628F7E4023bC4cdaEc507a55E6E72A47f'
+export const VE_DIST_ADDRESS = '0xD60906fad10bA49752d4EffdE2C6F4593f1a49f2'
 export const VE_DIST_ABI = abis.veDistABI
 
-export const VOTER_ADDRESS = '0x5f822a05E6A2926d70b67F69B59aa197538859c8'
+export const VOTER_ADDRESS = '0x9C10D9b626DAa2f6aAfdD1dbf53aA4b3608eb294'
 export const VOTER_ABI = abis.voterABI
 
-export const LIBRARY_ADDRESS = '0x1B5b8eF642f2aa5fc950E439ba396D70210FBA66'
+export const LIBRARY_ADDRESS = '0x01676C376fb5F07062c2d1E62de6e60995C88050'
 export const LIBRARY_ABI = abis.solidlyLibraryABI
 
 export const ERC20_ABI = abis.erc20ABI
